@@ -1,0 +1,13 @@
+{
+  "functions": {
+    "api/subgrupo.py": {
+      "runtime": "@vercel/python"
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/subgrupo",
+      "dest": "/api/subgrupo.py"
+    }
+  ]
+}
