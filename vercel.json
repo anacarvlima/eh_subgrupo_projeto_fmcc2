@@ -1,13 +1,8 @@
 {
+  "version": 2,
   "functions": {
     "api/subgrupo.py": {
-      "runtime": "@vercel/python"
+      "runtime": "python3.9"
     }
-  },
-  "routes": [
-    {
-      "src": "/api/subgrupo",
-      "dest": "/api/subgrupo.py"
-    }
-  ]
+  }
 }
