@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificador Subgrupos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Verificador de Grupos e Subgrupos</h1>
+            <p>Ferramenta matemática para verificar propriedades de grupos e subgrupos</p>
+        </div>
+
+        <div class="info-box">
+            <h4>Como usar:</h4>
+            <p>Digite os elementos separados por espaço (ex: 0 1 2 3). Para módulo, deixe em branco se não usar. Escolha + para adição ou * para multiplicação.</p>
+        </div>
+
+        <form id="gruposForm">
+            <div class="form-container">
+                <div class="grupo-form">
+                    <h2>Grupo G</h2>
+                    <div class="form-group">
+                        <label for="elementosG">Elementos do Grupo G:</label>
+                        <input type="text" id="elementosG" placeholder="Ex: 0 1 2 3 4" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="operacaoG">Operação:</label>
+                        <select id="operacaoG" required>
+                            <option value="">Selecione uma operação</option>
+                            <option value="+">Adição (+)</option>
+                            <option value="*">Multiplicação (*)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="moduloG">Módulo (opcional):</label>
+                        <input type="number" id="moduloG" placeholder="Ex: 5 (deixe vazio se não usar)">
+                    </div>
+                </div>
+
+                <div class="grupo-form">
+                    <h2>Grupo H</h2>
+                    <div class="form-group">
+                        <label for="elementosH">Elementos do Grupo H:</label>
+                        <input type="text" id="elementosH" placeholder="Ex: 0 2 4" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="operacaoH">Operação:</label>
+                        <select id="operacaoH" required>
+                            <option value="">Selecione uma operação</option>
+                            <option value="+">Adição (+)</option>
+                            <option value="*">Multiplicação (*)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="moduloH">Módulo (opcional):</label>
+                        <input type="number" id="moduloH" placeholder="Ex: 5 (deixe vazio se não usar)">
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-container">
+                <button type="submit" class="btn-verificar">🔍 Verificar Grupos</button>
+            </div>
+        </form>
+
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
+            <p>Verificando propriedades dos grupos...</p>
+        </div>
+
+        <div class="error-message" id="errorMessage" style="display: none;"></div>
+
+        <!-- Caixa de texto com os resultados -->
+        <div class="output-container" id="outputContainer" style="display: none;">
+            <div class="output-header">
+                <h3>📊 Resultados da Verificação</h3>
+            </div>
+            <div class="output-content">
+                <pre id="outputText"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
