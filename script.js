@@ -1,4 +1,4 @@
-// Configuração da API - altere aqui se necessário
+// Configuração da API
 const API_URL = '/api/subgrupo';
 
 document.getElementById('gruposForm').addEventListener('submit', async function(e) {
@@ -47,27 +47,30 @@ document.getElementById('gruposForm').addEventListener('submit', async function(
             }
         };
         
-        // Fazer chamada à API
-       const response = await fetch(API_URL, {
+        // Chamada à API
+        const response = await fetch(API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(dados)
         });
 
-        const result = await response.json();
+        // Tenta converter para JSON
+        let result;
+        try {
+            result = await response.json();
+        } catch (err) {
+            throw new Error('Resposta inválida do servidor');
+        }
         
+        // Verifica sucesso
         if (result.sucesso) {
             mostrarResultados(result);
         } else {
-            mostrarErro(result.erro);
+            mostrarErro(result.erro || 'Erro desconhecido no servidor');
         }
         
     } catch (error) {
-        if (error.name === 'TypeError' && error.message.includes('fetch')) {
-            mostrarErro('Erro de conexão: Certifique-se de que o servidor Python está rodando em http://localhost:5000');
-        } else {
-            mostrarErro('Erro ao processar os dados: ' + error.message);
-        }
+        mostrarErro('Erro ao processar os dados: ' + error.message);
     } finally {
         // Esconder loading e reabilitar botão
         document.getElementById('loading').style.display = 'none';
@@ -79,32 +82,25 @@ document.getElementById('gruposForm').addEventListener('submit', async function(
 function mostrarResultados(response) {
     let output = '';
     
-    // Adicionar separador inicial
-    output += '=' .repeat(60) + '\n';
+    output += '='.repeat(60) + '\n';
     output += '           VERIFICAÇÃO DE GRUPOS E SUBGRUPOS\n';
-    output += '=' .repeat(60) + '\n\n';
+    output += '='.repeat(60) + '\n\n';
     
-    // Resultado do Grupo G
     output += formatarResultadoGrupo(response.grupoG);
     output += '\n' + '-'.repeat(60) + '\n\n';
     
-    // Resultado do Grupo H
     output += formatarResultadoGrupo(response.grupoH);
     output += '\n' + '-'.repeat(60) + '\n\n';
     
-    // Resultado do teste de subgrupo
     output += formatarResultadoSubgrupo(response.subgrupo);
     
-    // Adicionar separador final
     output += '\n' + '='.repeat(60) + '\n';
     output += '                    FIM DA VERIFICAÇÃO\n';
     output += '='.repeat(60);
     
-    // Mostrar na interface
     document.getElementById('outputText').textContent = output;
     document.getElementById('outputContainer').style.display = 'block';
     
-    // Scroll suave até os resultados
     document.getElementById('outputContainer').scrollIntoView({
         behavior: 'smooth',
         block: 'start'
@@ -119,8 +115,6 @@ function formatarResultadoGrupo(grupo) {
     output += `Operação: ${grupo.operacao}${grupo.modulo ? ` (mod ${grupo.modulo})` : ''}\n\n`;
     
     output += 'VERIFICANDO PROPRIEDADES:\n';
-    
-    // Adicionar todas as mensagens
     grupo.mensagens.forEach(mensagem => {
         output += `  ${mensagem}\n`;
     });
@@ -139,8 +133,6 @@ function formatarResultadoSubgrupo(subgrupo) {
     let output = '';
     
     output += 'TESTANDO SE H É SUBGRUPO DE G:\n\n';
-    
-    // Adicionar todas as mensagens do teste de subgrupo
     subgrupo.mensagens.forEach(mensagem => {
         output += `  ${mensagem}\n`;
     });
@@ -156,25 +148,18 @@ function mostrarErro(mensagem) {
     errorDiv.textContent = mensagem;
     errorDiv.style.display = 'block';
     
-    // Scroll até o erro
     errorDiv.scrollIntoView({
         behavior: 'smooth',
         block: 'center'
     });
 }
 
-// Sincronizar operações (opcional - para facilitar o uso)
+// Sincronizar operações e módulos
 document.getElementById('operacaoG').addEventListener('change', function() {
     const operacaoH = document.getElementById('operacaoH');
-    if (operacaoH.value === '') {
-        operacaoH.value = this.value;
-    }
+    if (!operacaoH.value) operacaoH.value = this.value;
 });
-
-// Sincronizar módulos (opcional - para facilitar o uso)
 document.getElementById('moduloG').addEventListener('input', function() {
     const moduloH = document.getElementById('moduloH');
-    if (moduloH.value === '') {
-        moduloH.value = this.value;
-    }
+    if (!moduloH.value) moduloH.value = this.value;
 });
