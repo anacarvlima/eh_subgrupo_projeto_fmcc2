@@ -1,5 +1,5 @@
 // Configuração da API - altere aqui se necessário
-const API_URL = 'http://localhost:5000';
+const API_URL = '/api/subgrupo';
 
 document.getElementById('gruposForm').addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -48,14 +48,12 @@ document.getElementById('gruposForm').addEventListener('submit', async function(
         };
         
         // Fazer chamada à API
-        const response = await fetch(`${API_URL}/verificar_grupos`, {
+       const response = await fetch(API_URL, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(dados)
         });
-        
+
         const result = await response.json();
         
         if (result.sucesso) {
